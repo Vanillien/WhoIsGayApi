@@ -10,7 +10,7 @@ public class AppDbContext : DbContext
     {
         optionsBuilder.LogTo(Console.WriteLine);
 
-        optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayDb;User Id=postgres;Password=rr7kyy00");
+        //optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayDb;User Id=postgres;Password=rr7kyy00");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -18,8 +18,9 @@ public class AppDbContext : DbContext
         modelBuilder.ApplyConfiguration(new PersonConfiguration());
     }
 
-    public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions, DbSet<Person> persons) : base(dbContextOptions)
+    public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
     {
-        Persons = persons;
+        
     }
+    
 }
