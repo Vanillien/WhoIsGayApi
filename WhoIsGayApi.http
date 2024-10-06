@@ -1,0 +1,6 @@
+@WhoIsGayApi_HostAddress = http://localhost:5240
+
+GET {{WhoIsGayApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
