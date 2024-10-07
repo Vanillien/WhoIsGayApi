@@ -8,31 +8,32 @@ namespace WhoIsGayApi.Classes;
 
 public class Node : INode
 {
-    private IServiceProvider _serviceProvider;
-
-    public Node(IServiceProvider serviceProvider)
+    //private IServiceProvider _serviceProvider;
+    private IDbContextFactory<AppDbContext> _dbContextFactory;
+    
+    public Node(IDbContextFactory<AppDbContext> dbContextFactory)
     {
-        _serviceProvider = serviceProvider;
+        _dbContextFactory = dbContextFactory;
     }
 
     public void WriteObj(string firstName, string lastName, bool gay)
     {
-        using (AppDbContext db = _serviceProvider.GetRequiredService<AppDbContext>())
+        using (AppDbContext db = _dbContextFactory.CreateDbContext())
         {
-            var personBuilder = _serviceProvider.GetRequiredService<PersonBuilder>();
-            personBuilder.SetFirstName(firstName);
-            personBuilder.SetLastName(lastName);
-            personBuilder.SetGay(gay);
+            var person = new Person() {FirstName = firstName, LastName = lastName, Gay = gay};
+            db.Persons.Add(person);
             db.SaveChanges();
         }
     }
     
-    public void GetObj(string firstName)
+    public List<Person> GetObj(string firstName)
     {
-        using (AppDbContext db = _serviceProvider.GetRequiredService<AppDbContext>())
+        using (AppDbContext db = _dbContextFactory.CreateDbContext())
         {
-            //IQueryable<Person> res = db.Persons.Where(p => p.FirstName == firstName);
-            //т.к. поиск должен происходить по любому из свойств, то делать перегрузку метода что ли? Под все возможные комбинации? Была какая то нормальная альтернатива вместо этого говна, но я забыл.
+            var persons = db.Persons
+                .Where(p => p.FirstName == firstName)
+                .ToList();
+            return persons;
         }
     }
 
