@@ -11,9 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddPooledDbContextFactory<AppDbContext>(options => 
+/*builder.Services.AddPooledDbContextFactory<AppDbContext>(options => 
     options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayDb;User Id=postgres;Password=rr7kyy00"), 
-    poolSize: 128);
+    poolSize: 128);*/
+
+builder.Services.AddDbContext<AppDbContext>();
 
 builder.Services.AddTransient<AppDbContext>();
 builder.Services.AddSingleton<Node>();
