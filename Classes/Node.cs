@@ -6,35 +6,30 @@ namespace WhoIsGayApi.Classes;
 
 //Я хз, что такое Node и назвал этот класс так тупо по тому, что ему подходит сие наименование
 
-public class Node : INode
+public class Node(IDbContextFactory<AppDbContext> dbContextFactory) : INode
 {
-    //private IServiceProvider _serviceProvider;
-    private IDbContextFactory<AppDbContext> _dbContextFactory;
-    
-    public Node(IDbContextFactory<AppDbContext> dbContextFactory)
+    public void CreateWriteObj(string firstName, string lastName, bool gay, string email)
     {
-        _dbContextFactory = dbContextFactory;
+        using var db = dbContextFactory.CreateDbContext();
+        var person = new Person() {FirstName = firstName, LastName = lastName, Gay = gay, Email = email};
+        db.Persons.Add(person);
+        db.SaveChanges();
     }
 
-    public void WriteObj(string firstName, string lastName, bool gay)
+    public void WriteObj(Person person)
     {
-        using (AppDbContext db = _dbContextFactory.CreateDbContext())
-        {
-            var person = new Person() {FirstName = firstName, LastName = lastName, Gay = gay};
-            db.Persons.Add(person);
-            db.SaveChanges();
-        }
+        using var db = dbContextFactory.CreateDbContext();
+        db.Persons.Add(person);
+        db.SaveChanges();
     }
     
     public List<Person> GetObj(string firstName)
     {
-        using (AppDbContext db = _dbContextFactory.CreateDbContext())
-        {
-            var persons = db.Persons
-                .Where(p => p.FirstName == firstName)
-                .ToList();
-            return persons;
-        }
+        using var db = dbContextFactory.CreateDbContext();
+        var persons = db.Persons
+            .Where(p => p.FirstName == firstName)
+            .ToList();
+        return persons;
     }
 
     public void RemoveObj()

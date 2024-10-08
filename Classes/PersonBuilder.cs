@@ -4,7 +4,7 @@ namespace WhoIsGayApi.Classes;
 
 public class PersonBuilder : IPersonBuilder
 {
-    private IPerson _person;
+    private readonly IPerson _person;
 
     public PersonBuilder(IPerson person)
     {
@@ -24,6 +24,11 @@ public class PersonBuilder : IPersonBuilder
     public void SetGay(bool gay)
     {
         _person.Gay = gay;
+    }
+
+    public void SetEmail(string email)
+    {
+        _person.Email = email;
     }
 
     public IPerson BuildPerson()

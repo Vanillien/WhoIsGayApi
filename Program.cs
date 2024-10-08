@@ -25,12 +25,15 @@ builder.Services.AddSingleton<IPersonBuilder, PersonBuilder>();
 
 var serviceProvider = builder.Services.BuildServiceProvider();
 
-var node = serviceProvider.GetRequiredService<Node>();
-for (int i = 0; i < 100; i++)
+INode node = serviceProvider.GetRequiredService<Node>();
+
+/*for (int i = 0; i < 100; i++)
 {
     Console.WriteLine(node.GetObj("Олеже")[0].FirstName);
-}
-//Console.WriteLine(node.GetObj("Олеже")[0].FirstName);
+}*/
+node.CreateWriteObj("Акакий", "Акакиевич", true, "Josphinne312@gmail.com");
+node.CreateWriteObj("Боб", "Сранович", false, "Nabaldazhnik228@gmail.com");
+node.CreateWriteObj("Александр", "Отрыжкин", true, "Hewieno768@gmail.com");
 
 var app = builder.Build();
 

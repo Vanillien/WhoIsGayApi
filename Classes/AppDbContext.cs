@@ -2,13 +2,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WhoIsGayApi.Classes;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbContext(dbContextOptions)
 {
-    public DbSet<Person> Persons { get; set; }
+    public DbSet<Person> Persons { get; init; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //optionsBuilder.LogTo(Console.WriteLine);
+        optionsBuilder.LogTo(Console.WriteLine);
 
         optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayDb;User Id=postgres;Password=rr7kyy00");
     }
@@ -17,10 +17,4 @@ public class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new PersonConfiguration());
     }
-
-    public AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : base(dbContextOptions)
-    {
-        
-    }
-    
 }

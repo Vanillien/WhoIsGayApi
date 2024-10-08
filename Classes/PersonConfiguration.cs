@@ -23,5 +23,9 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
 
         builder.Property(p => p.Gay)
             .HasColumnName("Gay");
+
+        builder.Property(p => p.Email)
+            .HasColumnName("Email")
+            .HasMaxLength(100);
     }
 }
