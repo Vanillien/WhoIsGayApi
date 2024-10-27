@@ -1,4 +1,4 @@
-namespace WhoIsGayApi.Interfaces;
+namespace WhoIsGayApi.Models.Interfaces;
 
 public interface IPerson
 {
@@ -7,4 +7,6 @@ public interface IPerson
     public string LastName { get; set; }
     public bool Gay { get; set; }
     public string Email { get; set; }
+    public IUser Orderer { get; set; }
+    public string Description { get; set; }
 }

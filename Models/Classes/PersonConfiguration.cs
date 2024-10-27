@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace WhoIsGayApi.Classes;
+namespace WhoIsGayApi.Models.Classes;
 
 public class PersonConfiguration : IEntityTypeConfiguration<Person>
 {
@@ -27,5 +27,12 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
         builder.Property(p => p.Email)
             .HasColumnName("Email")
             .HasMaxLength(100);
+
+        builder.Property(p => p.Orderer)
+            .HasColumnName("Orderer");
+
+        builder.Property(p => p.Description)
+            .HasColumnName("description")
+            .HasMaxLength(500);
     }
 }

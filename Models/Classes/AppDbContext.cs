@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace WhoIsGayApi.Classes;
+namespace WhoIsGayApi.Models.Classes;
 
 public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbContext(dbContextOptions)
 {

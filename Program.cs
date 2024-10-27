@@ -1,7 +1,9 @@
 using System.Linq.Expressions;
-using WhoIsGayApi.Classes;
 using Microsoft.EntityFrameworkCore;
-using WhoIsGayApi.Interfaces;
+using WhoIsGayApi.Controllers;
+using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Models.Classes;
+using WhoIsGayApi.Models.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,34 +12,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-/*builder.Services.AddPooledDbContextFactory<AppDbContext>(options => 
-    options.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayDb;User Id=postgres;Password=rr7kyy00"), 
-    poolSize: 128);*/
+builder.Services.AddControllers();
 
 builder.Services.AddDbContextFactory<AppDbContext>();
 
 builder.Services.AddTransient<AppDbContext>();
-builder.Services.AddSingleton<Node>();
-//builder.Services.AddSingleton<IDbContextFactory<AppDbContext>>(); //Вот такую хуйню не регай, не будь ебланищем
+builder.Services.AddSingleton<INode, Node>();
 builder.Services.AddSingleton<IPerson, Person>();
-builder.Services.AddSingleton<IPersonBuilder, PersonBuilder>();
-
-var serviceProvider = builder.Services.BuildServiceProvider();
-
-INode node = serviceProvider.GetRequiredService<Node>();
-
-/*for (int i = 0; i < 100; i++)
-{
-    Console.WriteLine(node.GetObj("Олеже")[0].FirstName);
-}*/
-node.CreateWriteObj("Акакий", "Акакиевич", true, "Josphinne312@gmail.com");
-node.CreateWriteObj("Боб", "Сранович", false, "Nabaldazhnik228@gmail.com");
-node.CreateWriteObj("Александр", "Отрыжкин", true, "Hewieno768@gmail.com");
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.MapControllers();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
