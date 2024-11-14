@@ -7,7 +7,6 @@ namespace WhoIsGayApi.Models.Classes;
 
 public class Node(IDbContextFactory<AppDbContext> dbContextFactory) : INode
 {
-    private readonly IUser _user;
     public void CreateWriteObj(string firstName, string lastName, bool gay, string email)
     {
         using var db = dbContextFactory.CreateDbContext();
