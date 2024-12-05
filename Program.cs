@@ -1,31 +1,53 @@
 using System.Linq.Expressions;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using WhoIsGayApi.Controllers;
 using WhoIsGayApi.Models.Interfaces;
 using WhoIsGayApi.Models.Classes;
 using WhoIsGayApi.Models.Interfaces;
+using Aspire.Hosting.Keycloak;
+using IdentityModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-//builder.Services.AddAuthentication().AddKeycloakJwtBearer("keycloak", )
+builder.Services.AddAuthentication(options =>
+    {
+        options.DefaultScheme = "Cookies";
+        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+    })
+    .AddCookie("Cookies")
+    .AddKeycloakOpenIdConnect("keycloak", realm: "wawarealm", options =>
+    {
+        options.Authority = "http://localhost:8081/auth/realms/wawarealm";
+        options.ClientId = "whoisg";
+        options.ClientSecret = "Iwgvp5XSO65B10WH7To5jpH7rfkIqrrJ"; 
+        options.ResponseType = "code"; 
+        options.Scope.Add("openid"); //добавление Scope. "openid" - это стандартно так.
+        options.SaveTokens = true;
+        options.CallbackPath = "/*"; //установка Callback URI
+        options.SignedOutCallbackPath = "/*"; //путь к той странице, куда ты попадешь после того, как разовтаризуешься
+        options.RequireHttpsMetadata = false; //потом HTTPS жахнем
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+builder.Services.AddDbContextFactory<PersonContext>();
 
-builder.Services.AddDbContextFactory<AppDbContext>();
-
-builder.Services.AddTransient<AppDbContext>();
-builder.Services.AddSingleton<INode, Node>();
-builder.Services.AddSingleton<IPerson, Person>();
+builder.Services.AddTransient<PersonContext>();
+builder.Services.AddTransient<IPerson, Person>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IUser, User>();
+builder.Services.AddTransient<HttpClient>();
+builder.Services.AddSingleton<KeycloakTokenService>();
+builder.Services.AddSingleton<KeycloakClient>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 app.MapControllers();
+app.UseAuthentication(); //Кто ты?
+app.UseAuthorization(); //Что тебе разрешено делать?
 
 if (app.Environment.IsDevelopment())
 {
@@ -35,29 +57,4 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-/*var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-    {
-        var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                (
-                    DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    Random.Shared.Next(-20, 55),
-                    summaries[Random.Shared.Next(summaries.Length)]
-                ))
-            .ToArray();
-        return forecast;
-    })
-    .WithName("GetWeatherForecast")
-    .WithOpenApi();*/
-
 app.Run();
-
-/*record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}*/

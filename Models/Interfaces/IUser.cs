@@ -2,7 +2,8 @@ namespace WhoIsGayApi.Models.Interfaces;
 
 public interface IUser
 {
+    public string Id { get; set; }
     public string Username { get; set; }
     public string Email { get; set; }
-    public string ImageUrl { get; set; }
+    public List<string> Roles { get; set; }
 }

@@ -10,7 +10,7 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
         builder.ToTable("Persons");
 
         builder.Property(p => p.Id)
-            .HasColumnName("Id")
+            .HasColumnName("id")
             .IsRequired();
 
         builder.Property(p => p.FirstName)
@@ -22,17 +22,16 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
             .HasMaxLength(100);
 
         builder.Property(p => p.Gay)
-            .HasColumnName("Gay");
-
-        builder.Property(p => p.Email)
-            .HasColumnName("Email")
-            .HasMaxLength(100);
-
+            .HasColumnName("gay");
+        
         builder.Property(p => p.Orderer)
-            .HasColumnName("Orderer");
+            .HasColumnName("orderer");
 
         builder.Property(p => p.Description)
             .HasColumnName("description")
             .HasMaxLength(500);
+
+        builder.Property(p => p.CreationTime)
+            .HasColumnName("creation_time");
     }
 }

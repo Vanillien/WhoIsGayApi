@@ -8,7 +8,7 @@ namespace WhoIsGayApi.Controllers;
 [Route("api/wawa")]
 [ApiController]
 [Authorize]
-public class SupportController : ControllerBase
+public class AdminPanelController : ControllerBase
 {
-    
+    //Контроллер, доступный только админу
 }

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WhoIsGayApi.Models.Classes;
 
-public class AppDbContext(DbContextOptions<AppDbContext> dbContextOptions) : DbContext(dbContextOptions)
+public class PersonContext(DbContextOptions<PersonContext> dbContextOptions) : DbContext(dbContextOptions)
 {
     public DbSet<Person> Persons { get; init; }
 
