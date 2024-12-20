@@ -14,11 +14,10 @@ public class KeycloakClient //это ащтидипи клиент персон�
     {
         _httpClient = httpClient;
         _tokenService = tokenService;
-        _httpClient.BaseAddress = new Uri("http://localhost:8081/admin/realms/wawarealm/");
-        //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminToken);
+        _httpClient.BaseAddress = new Uri("http://localhost:8081/admin/realms/wawarealm/");//"http://localhost:8081/admin/realms/wawarealm/"
     }
 
-    public async Task CreateUserAsync(UserDto user)
+    public async Task CreateUserAsync(User user)//UserKeycloakDto
     {
         var adminToken = await _tokenService.GetAccessTokenAsync();
         _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", adminToken);

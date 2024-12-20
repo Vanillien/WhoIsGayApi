@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WhoIsGayApi.Models.Classes;
@@ -8,18 +9,32 @@ namespace WhoIsGayApi.Controllers;
 [Route("api/login")]
 [ApiController]
 [Authorize]
-public class LoginController(KeycloakClient keycloakClient)
+public class LoginController(KeycloakClient keycloakClient, KeycloakTokenService tokenService)
     : ControllerBase
 {
-    private readonly KeycloakClient _keycloakClient = keycloakClient;
     
-    public async Task<IActionResult> RegisterUserAsync()
+    [Route("register")]
+    [HttpGet]
+    [ProducesResponseType(200)]
+    [Produces("application/json")]
+    public async Task<IActionResult> RegisterUserAsync()//UserKeycloakDto // User user
     {
-        //_keycloakClient.CreateUserAsync()
+        var adminToken = await tokenService.GetAccessTokenAsync();
+        
+        /*var user = new User() 
+        {
+            Id = "b2c2ec6b-b3d7-46f4-ba5e-a7dab46231f8",
+            Username = "Googendochen",
+            Email = "bublik665@gmail.com"
+        };
+        ///
+        await keycloakClient.CreateUserAsync(user);*/
+        Console.WriteLine($"ВОТ ТОКЕН: {adminToken}");
+        return Ok(adminToken);//смысл в этом методе, если он срабатывает вне зависимости от того, как .CreateUserAsync() сработает
     }
     
-    public async Task<IActionResult> AuthenticateUserAsync()
+    /*public async Task<IActionResult> AuthenticateUserAsync()
     {
         throw new NotImplementedException();
-    }
+    }*/
 }

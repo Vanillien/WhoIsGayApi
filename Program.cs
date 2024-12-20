@@ -19,9 +19,9 @@ builder.Services.AddAuthentication(options =>
     .AddCookie("Cookies")
     .AddKeycloakOpenIdConnect("keycloak", realm: "wawarealm", options =>
     {
-        options.Authority = "http://localhost:8081/auth/realms/wawarealm";
+        options.Authority = "https://localhost:8081/realms/wawarealm";
         options.ClientId = "whoisg";
-        options.ClientSecret = "Iwgvp5XSO65B10WH7To5jpH7rfkIqrrJ"; 
+        options.ClientSecret = "KLlQlZ9Z1mIjaDF4e9iGK6UkZgrUO21k"; 
         options.ResponseType = "code"; 
         options.Scope.Add("openid"); //добавление Scope. "openid" - это стандартно так.
         options.SaveTokens = true;
@@ -29,6 +29,17 @@ builder.Services.AddAuthentication(options =>
         options.SignedOutCallbackPath = "/*"; //путь к той странице, куда ты попадешь после того, как разовтаризуешься
         options.RequireHttpsMetadata = false; //потом HTTPS жахнем
     });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalhost", policy =>
+    {
+        policy.WithOrigins("http://localhost:8081", "https://localhost:5240")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -48,6 +59,7 @@ var app = builder.Build();
 app.MapControllers();
 app.UseAuthentication(); //Кто ты?
 app.UseAuthorization(); //Что тебе разрешено делать?
+app.UseCors("AllowLocalhost");
 
 if (app.Environment.IsDevelopment())
 {
