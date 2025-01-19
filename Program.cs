@@ -6,40 +6,51 @@ using WhoIsGayApi.Controllers;
 using WhoIsGayApi.Models.Interfaces;
 using WhoIsGayApi.Models.Classes;
 using WhoIsGayApi.Models.Interfaces;
-using Aspire.Hosting.Keycloak;
-using IdentityModel;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using io.fusionauth;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = "Cookies";
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
     })
-    .AddCookie("Cookies")
-    .AddKeycloakOpenIdConnect("keycloak", realm: "wawarealm", options =>
+    .AddCookie(options =>
     {
-        options.Authority = "https://localhost:8081/realms/wawarealm";
-        options.ClientId = "whoisg";
-        options.ClientSecret = "KLlQlZ9Z1mIjaDF4e9iGK6UkZgrUO21k"; 
-        options.ResponseType = "code"; 
-        options.Scope.Add("openid"); //добавление Scope. "openid" - это стандартно так.
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    }) 
+    .AddOpenIdConnect(options =>
+    {
+        options.Authority = "http://localhost:9011";
+        options.ClientId = "4130d326-4e9f-4a02-b1a0-8ac2d45a8fdd";
+        options.ClientSecret = "I7GJcxoisHcjPlL0d-ByQeDlouI9vmPMVTet00Y5Rw4";
+        options.ResponseType = "code";
+        options.RequireHttpsMetadata = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
         options.SaveTokens = true;
-        options.CallbackPath = "/*"; //установка Callback URI
-        options.SignedOutCallbackPath = "/*"; //путь к той странице, куда ты попадешь после того, как разовтаризуешься
-        options.RequireHttpsMetadata = false; //потом HTTPS жахнем
+        options.Scope.Add("profile");
+        options.Scope.Add("openid");
+        options.Scope.Add("email");
+        options.CallbackPath = "/auth/callback";
+        options.Scope.Add("offline_access");
+        options.SkipUnrecognizedRequests = true;
+        /*
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidIssuer = "http://localhost:9011",
+            ValidAudience = "4130d326-4e9f-4a02-b1a0-8ac2d45a8fdd",
+            ValidateIssuerSigningKey = true,
+        };*/
     });
 
-builder.Services.AddCors(options =>
+/*builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.AddPolicy("AllowLocalhost", policy =>
-    {
-        policy.WithOrigins("http://localhost:8081", "https://localhost:5240")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials();
-    });
-});
+    options.Cookie.SameSite = SameSiteMode.Lax; // Позволяет отправлять куки в кросс-доменных запросах
+});*/
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -48,18 +59,31 @@ builder.Services.AddDbContextFactory<PersonContext>();
 
 builder.Services.AddTransient<PersonContext>();
 builder.Services.AddTransient<IPerson, Person>();
-builder.Services.AddSingleton<IUserService, UserService>();
-builder.Services.AddSingleton<IUser, User>();
+//builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddTransient<IUser, User>();
 builder.Services.AddTransient<HttpClient>();
-builder.Services.AddSingleton<KeycloakTokenService>();
-builder.Services.AddSingleton<KeycloakClient>();
-
+/////
+/*ForwardedHeadersOptions forwardedHeadersOptions = new()
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+};
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();*/
+////
 var app = builder.Build();
-
+/////
+//app.UseForwardedHeaders();
+//app.UseCookiePolicy();
+////
 app.MapControllers();
-app.UseAuthentication(); //Кто ты?
-app.UseAuthorization(); //Что тебе разрешено делать?
-app.UseCors("AllowLocalhost");
+app.UseAuthentication(); 
+app.UseAuthorization();
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -67,6 +91,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.Run();

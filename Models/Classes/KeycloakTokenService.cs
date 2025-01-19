@@ -1,5 +1,4 @@
 using System.Net.Http.Headers;
-using k8s.Models;
 using WhoIsGayApi.Models.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

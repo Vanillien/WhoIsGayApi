@@ -11,7 +11,7 @@ namespace WhoIsGayApi.Controllers;
 public class AddOrderController(IUserService userService, IDbContextFactory<PersonContext> dbContextFactory)
     : ControllerBase
 {
-    [HttpPost]
+    /*[HttpPost]
     [Route("addorderasync")]
     [ProducesResponseType(200)]
     public async Task<IActionResult> AddOrderAsync(string firstName, string lastName, bool gay, string description)
@@ -28,5 +28,5 @@ public class AddOrderController(IUserService userService, IDbContextFactory<Pers
         await db.Persons.AddAsync(person);
         await db.SaveChangesAsync();
         return Ok(); //return: 200 status code
-    }
+    }*/
 }

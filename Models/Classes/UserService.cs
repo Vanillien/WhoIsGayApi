@@ -1,6 +1,9 @@
 using System.Security.Claims;
 using System.Security.Principal;
 using WhoIsGayApi.Models.Interfaces;
+using io.fusionauth;
+using io.fusionauth.domain.api;
+
 
 namespace WhoIsGayApi.Models.Classes;
 
@@ -19,13 +22,14 @@ public class UserService : IUserService
             Username = principal.FindFirst("preferred_name")?.Value,
             Email = principal.FindFirst(ClaimTypes.Email)?.Value,
             Roles = principal.FindAll(ClaimTypes.Role).Select(c => c.Value).ToList()
+            //password
         };
 
         return user;
     }
 
-    public async Task RegisterUserAsync(IUser user)
+    public async Task RegisterUserAsync(io.fusionauth.domain.User user)
     {
-        throw new NotImplementedException();
+        var wawa = await FusionClientHolder.FusionAuthClient.CreateUserAsync(null, new UserRequest{user = user});
     }
 }

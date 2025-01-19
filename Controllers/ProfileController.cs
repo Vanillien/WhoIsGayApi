@@ -7,11 +7,12 @@ namespace WhoIsGayApi.Controllers;
 
 [Route("api/profile")] 
 [ApiController]
+[Authorize]
 public class ProfileController(IUserService userService) : ControllerBase //навешать атрибутов надобно
 {
     private readonly IUserService _userService = userService;
     
-    [HttpGet]
+    /*[HttpGet]
     [Route("index")]
     [ProducesResponseType(200)]
     [Produces<User>]
@@ -19,5 +20,5 @@ public class ProfileController(IUserService userService) : ControllerBase //на
     {
         var currentUser = _userService.GetCurrentUser(User);
         return Ok(currentUser); //return: 200 status code, currentUser
-    }
+    }*/
 }
