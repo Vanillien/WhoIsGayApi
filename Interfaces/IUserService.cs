@@ -1,8 +1,8 @@
 using System.Security.Claims;
-using WhoIsGayApi.Models.Classes;
+using WhoIsGayApi.Classes;
 
 
-namespace WhoIsGayApi.Models.Interfaces;
+namespace WhoIsGayApi.Interfaces;
 
 public interface IUserService
 {

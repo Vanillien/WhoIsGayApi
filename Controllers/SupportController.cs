@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WhoIsGayApi.Models.Classes;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Classes;
+using WhoIsGayApi.Interfaces;
 
 namespace WhoIsGayApi.Controllers;
 

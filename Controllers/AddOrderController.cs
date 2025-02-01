@@ -1,32 +1,35 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WhoIsGayApi.Models.Classes;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Classes;
+using WhoIsGayApi.Interfaces;
+using WhoIsGayApi.Models;
 
 namespace WhoIsGayApi.Controllers;
+/// <summary>
+///Completed
+/// </summary>
+/// <param name="dbContextFactory"></param>
 
 [Route("api/addorder")]
 [ApiController]
 [Authorize]
-public class AddOrderController(IUserService userService, IDbContextFactory<PersonContext> dbContextFactory)
+public class AddOrderController(IDbContextFactory<OrderContext> dbContextFactory)
     : ControllerBase
 {
-    /*[HttpPost]
-    [Route("addorderasync")]
-    [ProducesResponseType(200)]
-    public async Task<IActionResult> AddOrderAsync(string firstName, string lastName, bool gay, string description)
+    [HttpGet]
+    [Route("add")]
+    public async Task AddOrderAsync(string firstName, string lastName, string description)
     {
+        //Тут создается новый Order и отправляется в БД. Для записи поля Orderer будет получено имя пользователя и записано в это поле.
         await using var db = await dbContextFactory.CreateDbContextAsync();
-        var person = new Person(userService.GetCurrentUser(User))
+        db.Add(new Order()
         {
             FirstName = firstName,
             LastName = lastName,
-            Gay = gay,
             Description = description,
-            CreationTime = DateTime.UtcNow
-        };
-        await db.Persons.AddAsync(person);
+            Orderer = HttpContext.User.FindFirst("preferred_username")?.Value ?? "null"
+        });
         await db.SaveChangesAsync();
-        return Ok(); //return: 200 status code
-    }*/
+    }
 }

@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using WhoIsGayApi.Models;
 
-namespace WhoIsGayApi.Models.Classes;
+namespace WhoIsGayApi.Classes;
 
-public class PersonContext(DbContextOptions<PersonContext> dbContextOptions) : DbContext(dbContextOptions)
+public class OrderContext(DbContextOptions<OrderContext> dbContextOptions) : DbContext(dbContextOptions)
 {
-    public DbSet<Person> Persons { get; init; }
-
+    public DbSet<Order> Orders { get; init; }
+    
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.LogTo(Console.WriteLine);
@@ -15,6 +16,6 @@ public class PersonContext(DbContextOptions<PersonContext> dbContextOptions) : D
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new PersonConfiguration());
+        modelBuilder.ApplyConfiguration(new OrderConfiguration());
     }
 }

@@ -1,13 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using WhoIsGayApi.Models;
 
-namespace WhoIsGayApi.Models.Classes;
+namespace WhoIsGayApi.Classes;
 
-public class PersonConfiguration : IEntityTypeConfiguration<Person>
+public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {
-    public void Configure(EntityTypeBuilder<Person> builder)
+    public void Configure(EntityTypeBuilder<Order> builder)
     {
-        builder.ToTable("Persons");
+        builder.ToTable("Orders");
 
         builder.Property(p => p.Id)
             .HasColumnName("id")
@@ -25,7 +26,8 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
             .HasColumnName("gay");
         
         builder.Property(p => p.Orderer)
-            .HasColumnName("orderer");
+            .HasColumnName("orderer")
+            .HasMaxLength(100);
 
         builder.Property(p => p.Description)
             .HasColumnName("description")

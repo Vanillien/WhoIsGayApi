@@ -1,23 +1,28 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Immutable;
 using Microsoft.AspNetCore.Http;
-using WhoIsGayApi.Models.Classes;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Classes;
+using WhoIsGayApi.Interfaces;
+using WhoIsGayApi.Models;
 
 namespace WhoIsGayApi.Controllers;
 /// <summary>
-///  Тут можно посмотреть оставленные собой заказы и их текущее состояние. (не доделано)
+///Completed
 /// </summary>
 [Route("orders")]
 [ApiController]
-public class OrdersController : ControllerBase
+public class OrdersController(IDbContextFactory<OrderContext> dbContextFactory) : ControllerBase
 {
     [Route("getorderedpersons")]
     [HttpGet]
-    [Produces<AllPersonsModel>]
+    [Produces<AllOrdersModel>]
     [ProducesResponseType(200)]
-    public IActionResult GetOrderedPersonsAsync()
+    public async Task<AllOrdersModel> GetOrderedPersonsAsync()
     {
-        throw new Exception(); //Найти в базе данных тех Persons, у которых свойство Orderer - это User, использующий метод
+        var username = HttpContext.User.FindFirst("preferred_username")?.Value ?? "null";
+        await using var db = await dbContextFactory.CreateDbContextAsync();
+        AllOrdersModel orders = new AllOrdersModel();
+        orders.Orders = await db.Orders.Where(o => o.Orderer == username).ToListAsync();
+        return orders;
     }
 }

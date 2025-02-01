@@ -1,24 +1,31 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using WhoIsGayApi.Models.Classes;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Classes;
+using WhoIsGayApi.Interfaces;
+using WhoIsGayApi.Models;
 
-namespace WhoIsGayApi.Controllers;
+namespace WhoIsGayApi.Controllers; 
+/// <summary>
+/// Completed
+/// </summary>
 
 [Route("api/profile")] 
 [ApiController]
 [Authorize]
-public class ProfileController(IUserService userService) : ControllerBase //навешать атрибутов надобно
+public class ProfileController : ControllerBase 
 {
-    private readonly IUserService _userService = userService;
-    
-    /*[HttpGet]
+    [HttpGet]
     [Route("index")]
     [ProducesResponseType(200)]
-    [Produces<User>]
-    public async Task<IActionResult> Index() //Index - метод, который кажись используется для получения каких то данных сразу после захода пользователя на страницу.
+    public async Task<JsonResult> Index() //Index - метод, который кажись используется для получения каких то данных сразу после захода пользователя на страницу.
     {
-        var currentUser = _userService.GetCurrentUser(User);
-        return Ok(currentUser); //return: 200 status code, currentUser
-    }*/
+        var result = new
+        {
+            username = HttpContext.User.FindFirst("name")?.Value,
+            email = HttpContext.User.FindFirst("email")?.Value,
+            preferredName = HttpContext.User.FindFirst("preferred_username")?.Value
+        };
+
+        return new JsonResult(result);
+    }
 }

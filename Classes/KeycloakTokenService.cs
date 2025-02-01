@@ -1,10 +1,10 @@
 using System.Net.Http.Headers;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text;
 
-namespace WhoIsGayApi.Models.Classes;
+namespace WhoIsGayApi.Classes;
 
 public class KeycloakTokenService(HttpClient httpClient)
 {

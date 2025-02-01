@@ -1,4 +1,4 @@
-namespace WhoIsGayApi.Models.Interfaces;
+namespace WhoIsGayApi.Interfaces;
 
 public interface IUser
 {

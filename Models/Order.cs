@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 using NuGet.Packaging.Signing;
-using WhoIsGayApi.Models.Interfaces;
+using WhoIsGayApi.Interfaces;
 
-namespace WhoIsGayApi.Models.Classes;
+namespace WhoIsGayApi.Models;
 
-public class Person : IPerson
+public class Order : IOrder
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -16,20 +16,15 @@ public class Person : IPerson
     public string LastName { get; set; } = "";
     
     [JsonPropertyName("gay")]
-    public bool Gay { get; set; } 
-    
-    [JsonPropertyName("orderer")]
-    public IUser Orderer { get; set; }
+    public bool Gay { get; set; }
+
+    [JsonPropertyName("orderer")] 
+    public string Orderer { get; set; } = "";
     
     [JsonPropertyName("description")]
     public string Description { get; set; } = "";
 
-    [JsonPropertyName("creation_time")]
-    public DateTime CreationTime { get; set; }
-    
-    public Person(IUser orderer)
-    {
-        Orderer = orderer;
-    }
+    [JsonPropertyName("creation_time")] 
+    public DateTime CreationTime { get; set; } = DateTime.UtcNow;
 
 }
