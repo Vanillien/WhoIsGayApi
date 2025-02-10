@@ -13,11 +13,11 @@ namespace WhoIsGayApi.Controllers;
 [ApiController]
 public class OrdersController(IDbContextFactory<OrderContext> dbContextFactory) : ControllerBase
 {
-    [Route("getorderedpersons")]
+    [Route("index")]
     [HttpGet]
     [Produces<AllOrdersModel>]
     [ProducesResponseType(200)]
-    public async Task<AllOrdersModel> GetOrderedPersonsAsync()
+    public async Task<AllOrdersModel> Index()
     {
         var username = HttpContext.User.FindFirst("preferred_username")?.Value ?? "null";
         await using var db = await dbContextFactory.CreateDbContextAsync();

@@ -11,15 +11,15 @@ namespace WhoIsGayApi.Controllers;
 /// </summary>
 /// <param name="dbContextFactory"></param>
 
-[Route("api/addorder")]
+[Route("addorder")]
 [ApiController]
 [Authorize]
 public class AddOrderController(IDbContextFactory<OrderContext> dbContextFactory)
     : ControllerBase
 {
     [HttpGet]
-    [Route("add")]
-    public async Task AddOrderAsync(string firstName, string lastName, string description)
+    [Route("index")]
+    public async Task Index(string firstName, string lastName, string description)
     {
         //Тут создается новый Order и отправляется в БД. Для записи поля Orderer будет получено имя пользователя и записано в это поле.
         await using var db = await dbContextFactory.CreateDbContextAsync();

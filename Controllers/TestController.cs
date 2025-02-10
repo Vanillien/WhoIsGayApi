@@ -10,13 +10,13 @@ namespace WhoIsGayApi.Controllers;
 /// </summary>
 
 [ApiController]
-[Route("api/test")]
+[Route("test")]
 [Authorize]
 public class TestController : ControllerBase
 {
     [HttpGet]
-    [Route("gagabuga")]
-    public string Gagabuga()
+    [Route("index")]
+    public string Index()
     {
         var claims = HttpContext.User.Claims;
         

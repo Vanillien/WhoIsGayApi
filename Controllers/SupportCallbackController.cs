@@ -5,10 +5,10 @@ using WhoIsGayApi.Interfaces;
 
 namespace WhoIsGayApi.Controllers;
 
-[Route("api/wawa")]
+[Route("supportcallback")]
 [ApiController]
-[Authorize(Roles = "admin")]
-public class CallbackSupportController : ControllerBase
+[Authorize]
+public class SupportCallbackController : ControllerBase
 {
     //контроллер, доступный только админу
 }
