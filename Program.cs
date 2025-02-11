@@ -55,7 +55,7 @@ builder.Services.AddDbContextFactory<OrderContext>();
 builder.Services.AddTransient<OrderContext>();
 builder.Services.AddTransient<IOrder, Order>();
 builder.Services.AddTransient<HttpClient>();
-
+builder.Services.AddTransient<WebSocketHandler>();
 var app = builder.Build();
 
 app.UseWebSockets();
@@ -72,18 +72,19 @@ if (app.Environment.IsDevelopment())
 //Надо сказать, что получается, что все запросы проходят через "основную точку", а метод Use() в этой самой точке ловит запрос и что либо с ним делает. 
 //Конкретно этот код сначала проверяет путь запроса, а после, если это /ws, то принимает соединение в новый экземпляр WebSocket, а метод Echo(который я еще не написал)
 //Будет это соединение обрабатывать и пока хз как. Если путь запроса не /ws, то оно просто станет ожидать следующего запроса и повторит с ним такой же хентай.
-app.Use(async (context, next) =>
+/*app.Use(async (context, next) =>
 {
     if (context.Request.Path == "/ws")
     {
         if (context.WebSockets.IsWebSocketRequest)
         {
             using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
-            await WebSocketHandler.HandleConnection(webSocket); //HandleConnection обрабатывает соединение
+            var webSocketHandler = new WebSocketHandler(app.Services.GetRequiredService<IHttpContextAccessor>());
+            await webSocketHandler.HandleConnection(webSocket); //HandleConnection обрабатывает соединение
         }
         else
         {
-            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;  
         }
     }
     else
@@ -92,6 +93,9 @@ app.Use(async (context, next) =>
     }
 });
 
+WebSocketHandler wawa = new WebSocketHandler(app.Services.GetRequiredService<IHttpContextAccessor>());*/
+
 app.Run();
+
 
 

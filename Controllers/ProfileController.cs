@@ -9,7 +9,7 @@ namespace WhoIsGayApi.Controllers;
 /// Completed
 /// </summary>
 
-[Route("api/profile")] 
+[Route("profile")] 
 [ApiController]
 [Authorize]
 public class ProfileController : ControllerBase 
