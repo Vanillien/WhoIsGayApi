@@ -9,7 +9,7 @@ public class WebSocketHandler
 {
     private static readonly ConcurrentDictionary<Guid, WebSocket> Сlients = new(); //Hash-table //Каждое подключение веб сокета хранится по id
     
-    public async Task HandleConnection(WebSocket webSocket, HttpContext httpContext) //ПРОЧИТАЙ ЭТОТ БЛОК КОДА
+    public async Task HandleConnection(WebSocket webSocket, HttpContext httpContext)
     {
         var clientId = Guid.NewGuid(); //создание уникального id
         Сlients[clientId] = webSocket; //добавляем подключение в хэш таблицу

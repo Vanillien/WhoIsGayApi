@@ -15,7 +15,7 @@ public class SupportController(WebSocketHandler webSocketHandler) : ControllerBa
 {
     [HttpGet]
     [Route("ws")]
-    public async Task Connect()
+    public async Task Connect() // 
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
