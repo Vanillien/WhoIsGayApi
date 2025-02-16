@@ -46,6 +46,7 @@ builder.Services.AddAuthentication(options =>
         
     });
 
+builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
@@ -53,9 +54,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContextFactory<OrderContext>();
 
 builder.Services.AddTransient<OrderContext>();
-builder.Services.AddTransient<IOrder, Order>();
 builder.Services.AddTransient<HttpClient>();
 builder.Services.AddTransient<WebSocketHandler>();
+
 var app = builder.Build();
 
 app.UseWebSockets();

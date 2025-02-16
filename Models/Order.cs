@@ -4,7 +4,7 @@ using WhoIsGayApi.Interfaces;
 
 namespace WhoIsGayApi.Models;
 
-public class Order : IOrder
+public class Order //по сути просто json
 {
     [JsonPropertyName("id")]
     public int Id { get; set; }
