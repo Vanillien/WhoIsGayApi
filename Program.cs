@@ -52,8 +52,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddDbContextFactory<OrderContext>();
+builder.Services.AddDbContextFactory<MessagesContext>();
 
 builder.Services.AddTransient<OrderContext>();
+builder.Services.AddTransient<MessagesContext>();
 builder.Services.AddTransient<HttpClient>();
 builder.Services.AddTransient<WebSocketHandler>();
 

@@ -11,7 +11,7 @@ public class MessagesContext(DbContextOptions<MessagesContext> dbContextOptions)
     {
         optionsBuilder.LogTo(Console.WriteLine);
 
-        optionsBuilder.UseNpgsql("");
+        optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=WhoIsGayMessagesDb;User Id=postgres;Password=rr7kyy00");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

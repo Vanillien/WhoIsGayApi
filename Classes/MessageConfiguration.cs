@@ -9,6 +9,10 @@ public class MessageConfiguration : IEntityTypeConfiguration<Message>
     public void Configure(EntityTypeBuilder<Message> builder)
     {
         builder.ToTable("Messages");
+        
+        builder.Property(p => p.Id)
+            .HasColumnName("id")
+            .IsRequired();
 
         builder.Property(p => p.Text)
             .HasColumnName("text")
